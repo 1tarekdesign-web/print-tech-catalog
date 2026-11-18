@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>كتالوج منتجات | تقنيات الطباعة</title>
+<meta name="description" content="كتالوج منتجات تقنيات الطباعة — أجندات، باكجات دعاية، دفاتر، وأكثر. حلب، الجميلية والعزيزية.">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --kiwi:#8DC63F;
+  --kiwi-dark:#5E9A26;
+  --kiwi-soft:#EFF7E2;
+  --silver:#C7CAD1;
+  --silver-light:#EDEEF1;
+  --silver-bg:#F4F5F6;
+  --ink:#20242A;
+  --muted:#6B7280;
+  --card:#FFFFFF;
+  --radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Cairo',Tahoma,Arial,sans-serif;
+  background:var(--silver-bg);
+  color:var(--ink);
+  line-height:1.6;
+  -webkit-tap-highlight-color:transparent;
+}
+a{color:inherit;text-decoration:none}
+
+/* ===== Header ===== */
+header{
+  background:linear-gradient(135deg,#FFFFFF 0%,var(--silver-light) 55%,#DDE0E5 100%);
+  border-bottom:3px solid var(--kiwi);
+  position:sticky;top:0;z-index:50;
+  box-shadow:0 2px 12px rgba(0,0,0,.08);
+}
+.header-inner{
+  max-width:1100px;margin:0 auto;
+  padding:10px 14px 12px;
+  display:flex;align-items:center;gap:12px;
+}
+.logo{flex:none;width:56px;height:60px;object-fit:contain}
+.brand{flex:1;min-width:0}
+.brand h1{font-size:1.25rem;font-weight:900;line-height:1.2;white-space:nowrap}
+.brand p{font-size:.8rem;color:var(--muted);font-weight:600}
+.count-badge{
+  flex:none;background:var(--kiwi);color:#fff;font-weight:800;font-size:.78rem;
+  padding:4px 12px;border-radius:999px;white-space:nowrap;
+}
+.search-wrap{max-width:1100px;margin:0 auto;padding:0 14px 12px}
+.search-box{position:relative}
+.search-box input{
+  width:100%;border:2px solid var(--silver);border-radius:999px;
+  padding:11px 44px 11px 16px;font-family:inherit;font-size:1rem;font-weight:600;
+  background:#fff;color:var(--ink);outline:none;transition:border-color .2s;
+}
+.search-box input:focus{border-color:var(--kiwi)}
+.search-box .icon{
+  position:absolute;right:15px;top:50%;transform:translateY(-50%);
+  font-size:1.1rem;color:var(--muted);pointer-events:none;
+}
+
+/* ===== Category chips ===== */
+.chips{
+  max-width:1100px;margin:0 auto;padding:12px 14px 4px;
+  display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  flex:none;border:2px solid var(--silver);background:#fff;color:var(--ink);
+  font-family:inherit;font-weight:700;font-size:.9rem;
+  padding:7px 16px;border-radius:999px;cursor:pointer;
+  transition:all .15s;white-space:nowrap;
+}
+.chip.active{background:var(--kiwi);border-color:var(--kiwi);color:#fff}
+.chip .n{opacity:.65;font-weight:600;font-size:.8rem}
+
+/* ===== Grid ===== */
+main{max-width:1100px;margin:0 auto;padding:10px 14px 30px}
+.grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+}
+@media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr);gap:16px}}
+@media(min-width:960px){.grid{grid-template-columns:repeat(4,1fr)}}
+.card{
+  background:var(--card);border-radius:var(--radius);overflow:hidden;
+  box-shadow:0 1px 6px rgba(0,0,0,.07);cursor:pointer;
+  display:flex;flex-direction:column;
+  transition:transform .15s, box-shadow .15s;
+}
+.card:active{transform:scale(.98)}
+.card .thumb{
+  position:relative;width:100%;aspect-ratio:1/1;background:var(--silver-light);
+  overflow:hidden;
+}
+.card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.card .thumb .multi{
+  position:absolute;left:8px;top:8px;background:rgba(0,0,0,.55);color:#fff;
+  font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:999px;
+}
+.card .body{padding:10px 11px 12px;flex:1;display:flex;flex-direction:column;gap:4px}
+.card h3{font-size:.92rem;font-weight:800;line-height:1.4}
+.card .contents{font-size:.78rem;color:var(--muted);font-weight:600;line-height:1.5}
+.card .prices{margin-top:auto;padding-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+.price{
+  font-size:.75rem;font-weight:800;padding:3px 10px;border-radius:999px;
+}
+.price.raw{background:var(--silver-light);color:var(--ink)}
+.price.printed{background:var(--kiwi-soft);color:var(--kiwi-dark)}
+.price .lbl{font-weight:600;opacity:.75}
+.empty{
+  grid-column:1/-1;text-align:center;padding:50px 10px;color:var(--muted);
+  font-weight:700;font-size:1rem;
+}
+
+/* ===== Lightbox ===== */
+.lightbox{
+  position:fixed;inset:0;background:rgba(15,18,22,.92);z-index:100;
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  padding:16px;
+}
+.lightbox.open{display:flex}
+.lightbox .lb-img-wrap{
+  position:relative;max-width:920px;width:100%;
+  display:flex;align-items:center;justify-content:center;
+}
+.lightbox img{
+  max-width:100%;max-height:68vh;object-fit:contain;border-radius:12px;
+  background:#fff;
+}
+.lb-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(255,255,255,.9);font-size:1.3rem;font-weight:900;color:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+}
+.lb-prev{right:8px}
+.lb-next{left:8px}
+.lb-close{
+  position:absolute;top:14px;left:14px;width:44px;height:44px;border-radius:50%;
+  border:none;cursor:pointer;background:rgba(255,255,255,.9);
+  font-size:1.2rem;font-weight:900;color:var(--ink);
+}
+.lb-info{
+  max-width:920px;width:100%;color:#fff;text-align:center;margin-top:14px;
+}
+.lb-info h3{font-size:1.15rem;font-weight:800}
+.lb-info p{font-size:.9rem;color:#C7CAD1;font-weight:600;margin-top:2px}
+.lb-info .prices{justify-content:center;margin-top:8px}
+.lb-info .price.raw{background:rgba(255,255,255,.16);color:#fff}
+.lb-info .price.printed{background:var(--kiwi);color:#fff}
+.lb-counter{margin-top:8px;font-size:.8rem;color:#9AA0A8;font-weight:700}
+
+/* ===== Footer ===== */
+footer{
+  background:linear-gradient(135deg,#2A2E35 0%,#20242A 100%);
+  color:#EDEEF1;margin-top:10px;
+}
+.footer-inner{max-width:1100px;margin:0 auto;padding:26px 16px 34px;text-align:center}
+.footer-inner .flogo{width:74px;height:80px;object-fit:contain;margin-bottom:8px}
+.footer-inner h2{font-size:1.1rem;font-weight:900}
+.footer-inner .tag{color:var(--kiwi);font-weight:800;font-size:.9rem;margin:2px 0 14px}
+.branches{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:16px;
+}
+.branch{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+  border-radius:12px;padding:10px 16px;font-size:.85rem;font-weight:600;line-height:1.7;
+}
+.branch b{color:#fff}
+.social a{
+  display:inline-block;background:var(--kiwi);color:#fff;font-weight:800;
+  padding:9px 22px;border-radius:999px;font-size:.9rem;
+}
+.copy{margin-top:18px;font-size:.75rem;color:#9AA0A8;font-weight:600}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <img class="logo" src="logo.png" alt="تقنيات الطباعة">
+    <div class="brand">
+      <h1>تقنيات الطباعة</h1>
+      <p>كتالوج منتجات الدعاية والإعلان</p>
+    </div>
+    <span class="count-badge" id="countBadge"></span>
+  </div>
+  <div class="search-wrap">
+    <div class="search-box">
+      <span class="icon">⌕</span>
+      <input id="search" type="search" placeholder="ابحث عن منتج (أجندة، باكج…)" autocomplete="off">
+    </div>
+  </div>
+</header>
+
+<nav class="chips" id="chips"></nav>
+
+<main>
+  <div class="grid" id="grid"></div>
+</main>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose" aria-label="إغلاق">✕</button>
+  <div class="lb-img-wrap">
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="السابق">‹</button>
+    <img id="lbImg" src="" alt="">
+    <button class="lb-nav lb-next" id="lbNext" aria-label="التالي">›</button>
+  </div>
+  <div class="lb-info">
+    <h3 id="lbTitle"></h3>
+    <p id="lbContents"></p>
+    <div class="prices" id="lbPrices"></div>
+    <div class="lb-counter" id="lbCounter"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <img class="flogo" src="logo.png" alt="تقنيات الطباعة">
+    <h2>تقنيات الطباعة</h2>
+    <div class="tag">الراعي الرسمي لتحقيق الأحلام — مافي شي مابينطبع عنا</div>
+    <div class="branches">
+      <div class="branch"><b>فرع الجميلية</b><br>مقابل جامع الصدّيق — جانب حوالات الهرم</div>
+      <div class="branch"><b>فرع العزيزية</b><br>شارع الكتاب المقدّس — مفرق XO</div>
+    </div>
+    <div class="social">
+      <a href="https://www.instagram.com/print_tech_aleppo" target="_blank" rel="noopener">تابعنا على إنستغرام ‏@print_tech_aleppo</a>
+    </div>
+    <div class="copy">الشحن لكافة المحافظات السورية · حلب</div>
+  </div>
+</footer>
+
+<script>
+let PRODUCTS = [];
+let activeCat = 'الكل';
+let query = '';
+
+const grid = document.getElementById('grid');
+const chipsEl = document.getElementById('chips');
+const searchEl = document.getElementById('search');
+const countBadge = document.getElementById('countBadge');
+
+function priceHTML(p){
+  if(!p.raw && !p.printed) return '';
+  let h = '<div class="prices">';
+  if(p.raw) h += `<span class="price raw"><span class="lbl">خام</span> ${p.raw}</span>`;
+  if(p.printed) h += `<span class="price printed"><span class="lbl">مطبوع</span> ${p.printed}</span>`;
+  return h + '</div>';
+}
+
+function cardHTML(p, i){
+  const multi = p.images.length > 1 ? `<span class="multi">${p.images.length} صور</span>` : '';
+  const contents = p.contents ? `<div class="contents">${p.contents}</div>` : '';
+  return `<article class="card" data-idx="${i}">
+    <div class="thumb"><img src="${p.images[0].thumb}" data-full="${p.images[0].full}" alt="${p.name}" loading="lazy">${multi}</div>
+    <div class="body"><h3>${p.name}</h3>${contents}${priceHTML(p)}</div>
+  </article>`;
+}
+
+function filtered(){
+  return PRODUCTS.filter(p => {
+    if(activeCat !== 'الكل' && p.category !== activeCat) return false;
+    if(query){
+      const hay = (p.name + ' ' + (p.contents||'') + ' ' + (p.code||'')).toLowerCase();
+      if(!hay.includes(query)) return false;
+    }
+    return true;
+  });
+}
+
+function render(){
+  const list = filtered();
+  countBadge.textContent = PRODUCTS.length + ' منتج';
+  if(!list.length){
+    grid.innerHTML = '<div class="empty">لا توجد منتجات مطابقة لبحثك</div>';
+    return;
+  }
+  grid.innerHTML = list.map((p, k) => cardHTML(p, PRODUCTS.indexOf(p))).join('');
+}
+
+function renderChips(){
+  const cats = ['الكل', ...new Set(PRODUCTS.map(p => p.category))];
+  chipsEl.innerHTML = cats.map(c => {
+    const n = c === 'الكل' ? PRODUCTS.length : PRODUCTS.filter(p => p.category === c).length;
+    return `<button class="chip${c === activeCat ? ' active' : ''}" data-cat="${c}">${c} <span class="n">${n}</span></button>`;
+  }).join('');
+}
+
+chipsEl.addEventListener('click', e => {
+  const b = e.target.closest('.chip');
+  if(!b) return;
+  activeCat = b.dataset.cat;
+  renderChips();
+  render();
+});
+
+searchEl.addEventListener('input', () => {
+  query = searchEl.value.trim().toLowerCase();
+  render();
+});
+
+grid.addEventListener('click', e => {
+  const card = e.target.closest('.card');
+  if(!card) return;
+  openLightbox(+card.dataset.idx);
+});
+
+/* Lightbox */
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbTitle = document.getElementById('lbTitle');
+const lbContents = document.getElementById('lbContents');
+const lbPrices = document.getElementById('lbPrices');
+const lbCounter = document.getElementById('lbCounter');
+let lbProduct = null, lbIndex = 0;
+
+function showLb(){
+  const img = lbProduct.images[lbIndex];
+  lbImg.src = img.full;
+  lbImg.alt = lbProduct.name;
+  lbTitle.textContent = lbProduct.name;
+  lbContents.textContent = lbProduct.contents || '';
+  lbPrices.innerHTML = priceHTML(lbProduct).replace('<div class="prices">','').replace('</div>','');
+  lbCounter.textContent = lbProduct.images.length > 1 ? `صورة ${lbIndex+1} من ${lbProduct.images.length}` : '';
+  document.getElementById('lbPrev').style.display = lbProduct.images.length > 1 ? 'flex' : 'none';
+  document.getElementById('lbNext').style.display = lbProduct.images.length > 1 ? 'flex' : 'none';
+}
+function openLightbox(idx){
+  lbProduct = PRODUCTS[idx];
+  lbIndex = 0;
+  showLb();
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(){
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+lb.addEventListener('click', e => { if(e.target === lb) closeLightbox(); });
+document.getElementById('lbPrev').addEventListener('click', e => {
+  e.stopPropagation();
+  lbIndex = (lbIndex - 1 + lbProduct.images.length) % lbProduct.images.length;
+  showLb();
+});
+document.getElementById('lbNext').addEventListener('click', e => {
+  e.stopPropagation();
+  lbIndex = (lbIndex + 1) % lbProduct.images.length;
+  showLb();
+});
+document.addEventListener('keydown', e => {
+  if(!lb.classList.contains('open')) return;
+  if(e.key === 'Escape') closeLightbox();
+  if(e.key === 'ArrowLeft') document.getElementById('lbNext').click();
+  if(e.key === 'ArrowRight') document.getElementById('lbPrev').click();
+});
+
+/* Touch swipe in lightbox */
+let touchX = null;
+lbImg.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, {passive:true});
+lbImg.addEventListener('touchend', e => {
+  if(touchX === null || !lbProduct || lbProduct.images.length < 2) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if(Math.abs(dx) > 40){
+    lbIndex = (lbIndex + (dx < 0 ? 1 : -1) + lbProduct.images.length) % lbProduct.images.length;
+    showLb();
+  }
+  touchX = null;
+}, {passive:true});
+
+fetch('catalog.json')
+  .then(r => r.json())
+  .then(data => {
+    PRODUCTS = data.products;
+    renderChips();
+    render();
+  })
+  .catch(() => {
+    grid.innerHTML = '<div class="empty">تعذّر تحميل الكتالوج — حاول تحديث الصفحة</div>';
+  });
+</script>
+</body>
+</html>
