@@ -21,6 +21,7 @@
   --muted:#6B7280;
   --card:#FFFFFF;
   --radius:16px;
+  --heart:#E5484D;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -39,7 +40,9 @@ header{
   border-bottom:3px solid var(--kiwi);
   position:sticky;top:0;z-index:50;
   box-shadow:0 2px 12px rgba(0,0,0,.08);
+  transition:box-shadow .3s;
 }
+header.scrolled{box-shadow:0 6px 20px rgba(0,0,0,.14)}
 .header-inner{
   max-width:1100px;margin:0 auto;
   padding:10px 14px 12px;
@@ -58,13 +61,42 @@ header{
 .search-box input{
   width:100%;border:2px solid var(--silver);border-radius:999px;
   padding:11px 44px 11px 16px;font-family:inherit;font-size:1rem;font-weight:600;
-  background:#fff;color:var(--ink);outline:none;transition:border-color .2s;
+  background:#fff;color:var(--ink);outline:none;transition:border-color .2s, box-shadow .2s;
 }
-.search-box input:focus{border-color:var(--kiwi)}
+.search-box input:focus{border-color:var(--kiwi);box-shadow:0 0 0 4px rgba(141,198,63,.18)}
 .search-box .icon{
   position:absolute;right:15px;top:50%;transform:translateY(-50%);
   font-size:1.1rem;color:var(--muted);pointer-events:none;
 }
+
+/* ===== Hero ===== */
+.hero{
+  position:relative;overflow:hidden;
+  background:linear-gradient(120deg,#FFFFFF 0%,var(--kiwi-soft) 45%,#E3EDE3 70%,#FFFFFF 100%);
+  background-size:200% 100%;
+  animation:heroShift 14s ease-in-out infinite alternate;
+  border-bottom:1px solid #E3E6E9;
+}
+@keyframes heroShift{from{background-position:0% 0}to{background-position:100% 0}}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);
+  background-size:250% 100%;background-position:120% 0;
+  animation:shine 6s ease-in-out infinite;
+}
+@keyframes shine{0%,55%{background-position:120% 0}90%,100%{background-position:-60% 0}}
+.hero-inner{max-width:1100px;margin:0 auto;padding:16px 14px 14px;text-align:center;position:relative;z-index:1}
+.hero h2{font-size:1.15rem;font-weight:900}
+.hero h2 b{color:var(--kiwi-dark)}
+.hero p{font-size:.85rem;color:var(--muted);font-weight:700;margin-top:1px}
+.hero-stats{
+  display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap;
+}
+.stat{
+  background:rgba(255,255,255,.85);border:1px solid #E3E6E9;
+  font-size:.75rem;font-weight:800;padding:4px 12px;border-radius:999px;
+}
+.stat b{color:var(--kiwi-dark)}
 
 /* ===== Category chips ===== */
 .chips{
@@ -77,34 +109,74 @@ header{
   flex:none;border:2px solid var(--silver);background:#fff;color:var(--ink);
   font-family:inherit;font-weight:700;font-size:.9rem;
   padding:7px 16px;border-radius:999px;cursor:pointer;
-  transition:all .15s;white-space:nowrap;
+  transition:all .18s;white-space:nowrap;
 }
-.chip.active{background:var(--kiwi);border-color:var(--kiwi);color:#fff}
+.chip.active{background:var(--kiwi);border-color:var(--kiwi);color:#fff;transform:scale(1.03)}
 .chip .n{opacity:.65;font-weight:600;font-size:.8rem}
+.chip.fav-chip.active{background:var(--heart);border-color:var(--heart)}
+
+/* ===== Toolbar ===== */
+.toolbar{
+  max-width:1100px;margin:0 auto;padding:8px 14px 2px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.results{font-size:.82rem;color:var(--muted);font-weight:700}
+.view-toggle{display:flex;gap:6px}
+.view-btn{
+  width:38px;height:38px;border-radius:10px;border:2px solid var(--silver);
+  background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .18s;color:var(--muted);
+}
+.view-btn.active{border-color:var(--kiwi);background:var(--kiwi-soft);color:var(--kiwi-dark)}
+.view-btn svg{width:19px;height:19px}
 
 /* ===== Grid ===== */
-main{max-width:1100px;margin:0 auto;padding:10px 14px 30px}
+main{max-width:1100px;margin:0 auto;padding:8px 14px 30px}
 .grid{
   display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
 }
 @media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr);gap:16px}}
 @media(min-width:960px){.grid{grid-template-columns:repeat(4,1fr)}}
+.grid.large{grid-template-columns:1fr}
+@media(min-width:640px){.grid.large{grid-template-columns:repeat(2,1fr)}}
 .card{
   background:var(--card);border-radius:var(--radius);overflow:hidden;
   box-shadow:0 1px 6px rgba(0,0,0,.07);cursor:pointer;
   display:flex;flex-direction:column;
-  transition:transform .15s, box-shadow .15s;
+  opacity:0;transform:translateY(16px);
+}
+.card.in{
+  opacity:1;transform:none;
+  transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.3,1),box-shadow .25s ease;
+}
+@media(hover:hover){
+  .card.in:hover{transform:translateY(-4px);box-shadow:0 10px 22px rgba(0,0,0,.12)}
 }
 .card:active{transform:scale(.98)}
 .card .thumb{
-  position:relative;width:100%;aspect-ratio:1/1;background:var(--silver-light);
-  overflow:hidden;
+  position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;
+  background:linear-gradient(100deg,var(--silver-light) 40%,#FFFFFF 50%,var(--silver-light) 60%);
+  background-size:200% 100%;
+  animation:shimmer 1.5s infinite;
 }
-.card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+@keyframes shimmer{from{background-position:180% 0}to{background-position:-80% 0}}
+.card .thumb img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .45s ease}
+.card .thumb img.ok{opacity:1}
 .card .thumb .multi{
   position:absolute;left:8px;top:8px;background:rgba(0,0,0,.55);color:#fff;
   font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:999px;
 }
+.fav-btn{
+  position:absolute;top:8px;right:8px;z-index:2;
+  width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(255,255,255,.92);box-shadow:0 1px 6px rgba(0,0,0,.18);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .15s;
+}
+.fav-btn:active{transform:scale(.85)}
+.fav-btn svg{width:19px;height:19px;fill:#B9BDC4;transition:fill .2s}
+.fav-btn.on svg{fill:var(--heart);animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.6)}55%{transform:scale(1.35)}100%{transform:scale(1)}}
 .card .body{padding:10px 11px 12px;flex:1;display:flex;flex-direction:column;gap:4px}
 .card h3{font-size:.92rem;font-weight:800;line-height:1.4}
 .card .contents{font-size:.78rem;color:var(--muted);font-weight:600;line-height:1.5}
@@ -123,20 +195,26 @@ main{max-width:1100px;margin:0 auto;padding:10px 14px 30px}
 /* ===== Lightbox ===== */
 .lightbox{
   position:fixed;inset:0;background:rgba(15,18,22,.92);z-index:100;
-  display:none;flex-direction:column;align-items:center;justify-content:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:16px;
+  visibility:hidden;opacity:0;
+  transition:opacity .28s ease, visibility 0s linear .28s;
 }
-.lightbox.open{display:flex}
+.lightbox.open{visibility:visible;opacity:1;transition:opacity .28s ease}
 .lightbox .lb-img-wrap{
   position:relative;max-width:920px;width:100%;
   display:flex;align-items:center;justify-content:center;
+  overflow:hidden;border-radius:12px;
 }
 .lightbox img{
   max-width:100%;max-height:68vh;object-fit:contain;border-radius:12px;
-  background:#fff;
+  background:#fff;cursor:zoom-in;
+  transform:scale(.93);transition:transform .28s ease;
 }
+.lightbox.open img{transform:scale(1)}
+.lb-img-wrap.zoomed img{transform:scale(1.9)!important;cursor:zoom-out}
 .lb-nav{
-  position:absolute;top:50%;transform:translateY(-50%);
+  position:absolute;top:50%;transform:translateY(-50%);z-index:2;
   width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
   background:rgba(255,255,255,.9);font-size:1.3rem;font-weight:900;color:var(--ink);
   display:flex;align-items:center;justify-content:center;
@@ -146,7 +224,7 @@ main{max-width:1100px;margin:0 auto;padding:10px 14px 30px}
 .lb-close{
   position:absolute;top:14px;left:14px;width:44px;height:44px;border-radius:50%;
   border:none;cursor:pointer;background:rgba(255,255,255,.9);
-  font-size:1.2rem;font-weight:900;color:var(--ink);
+  font-size:1.2rem;font-weight:900;color:var(--ink);z-index:2;
 }
 .lb-info{
   max-width:920px;width:100%;color:#fff;text-align:center;margin-top:14px;
@@ -157,6 +235,35 @@ main{max-width:1100px;margin:0 auto;padding:10px 14px 30px}
 .lb-info .price.raw{background:rgba(255,255,255,.16);color:#fff}
 .lb-info .price.printed{background:var(--kiwi);color:#fff}
 .lb-counter{margin-top:8px;font-size:.8rem;color:#9AA0A8;font-weight:700}
+.lb-actions{display:flex;gap:8px;justify-content:center;margin-top:12px}
+.lb-btn{
+  border:2px solid rgba(255,255,255,.35);background:transparent;color:#fff;
+  font-family:inherit;font-weight:800;font-size:.85rem;
+  padding:8px 18px;border-radius:999px;cursor:pointer;
+  transition:all .18s;
+}
+.lb-btn:active{transform:scale(.96)}
+.lb-btn.primary{background:var(--kiwi);border-color:var(--kiwi)}
+.lb-btn.fav.on{background:var(--heart);border-color:var(--heart)}
+
+/* ===== Toast + Back to top ===== */
+.toast{
+  position:fixed;bottom:26px;left:50%;transform:translate(-50%,20px);z-index:120;
+  background:#20242A;color:#fff;font-weight:700;font-size:.88rem;
+  padding:10px 20px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.3);
+  opacity:0;pointer-events:none;transition:opacity .25s, transform .25s;
+  white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+#toTop{
+  position:fixed;bottom:20px;left:16px;z-index:60;
+  width:48px;height:48px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--kiwi);color:#fff;font-size:1.3rem;font-weight:900;
+  box-shadow:0 4px 14px rgba(0,0,0,.25);
+  opacity:0;transform:translateY(12px);pointer-events:none;
+  transition:opacity .25s, transform .25s;
+}
+#toTop.show{opacity:1;transform:none;pointer-events:auto}
 
 /* ===== Footer ===== */
 footer{
@@ -180,11 +287,16 @@ footer{
   padding:9px 22px;border-radius:999px;font-size:.9rem;
 }
 .copy{margin-top:18px;font-size:.75rem;color:#9AA0A8;font-weight:600}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}
 </style>
 </head>
 <body>
 
-<header>
+<header id="header">
   <div class="header-inner">
     <img class="logo" src="logo.png" alt="تقنيات الطباعة">
     <div class="brand">
@@ -201,7 +313,31 @@ footer{
   </div>
 </header>
 
+<section class="hero">
+  <div class="hero-inner">
+    <h2>الراعي الرسمي <b>لتحقيق الأحلام</b></h2>
+    <p>مافي شي مابينطبع عنا — اختر منتجك واطلب طباعة شعارك عليه</p>
+    <div class="hero-stats">
+      <span class="stat"><b id="statProducts">57</b> منتج</span>
+      <span class="stat"><b id="statCats">8</b> أقسام</span>
+      <span class="stat">شحن لكل المحافظات</span>
+    </div>
+  </div>
+</section>
+
 <nav class="chips" id="chips"></nav>
+
+<div class="toolbar">
+  <span class="results" id="results"></span>
+  <div class="view-toggle">
+    <button class="view-btn active" id="viewGrid" aria-label="عرض شبكة" title="عرض شبكة">
+      <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>
+    </button>
+    <button class="view-btn" id="viewLarge" aria-label="عرض كبير" title="عرض كبير">
+      <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/></svg>
+    </button>
+  </div>
+</div>
 
 <main>
   <div class="grid" id="grid"></div>
@@ -209,18 +345,26 @@ footer{
 
 <div class="lightbox" id="lightbox">
   <button class="lb-close" id="lbClose" aria-label="إغلاق">✕</button>
-  <div class="lb-img-wrap">
-    <button class="lb-nav lb-prev" id="lbPrev" aria-label="السابق">‹</button>
+  <div class="lb-img-wrap" id="lbWrap">
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="السابق">›</button>
     <img id="lbImg" src="" alt="">
-    <button class="lb-nav lb-next" id="lbNext" aria-label="التالي">›</button>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="التالي">‹</button>
   </div>
   <div class="lb-info">
     <h3 id="lbTitle"></h3>
     <p id="lbContents"></p>
     <div class="prices" id="lbPrices"></div>
     <div class="lb-counter" id="lbCounter"></div>
+    <div class="lb-actions">
+      <button class="lb-btn fav" id="lbFav">♡ المفضلة</button>
+      <button class="lb-btn" id="lbCopy">نسخ الرابط</button>
+      <button class="lb-btn primary" id="lbShare">مشاركة</button>
+    </div>
   </div>
 </div>
+
+<div class="toast" id="toast"></div>
+<button id="toTop" aria-label="العودة للأعلى">↑</button>
 
 <footer>
   <div class="footer-inner">
@@ -242,11 +386,37 @@ footer{
 let PRODUCTS = [];
 let activeCat = 'الكل';
 let query = '';
+let viewMode = localStorage.getItem('pt-view') || 'grid';
+let favs = new Set(JSON.parse(localStorage.getItem('pt-favs') || '[]'));
 
 const grid = document.getElementById('grid');
 const chipsEl = document.getElementById('chips');
 const searchEl = document.getElementById('search');
 const countBadge = document.getElementById('countBadge');
+const resultsEl = document.getElementById('results');
+const toastEl = document.getElementById('toast');
+let toastTimer = null;
+
+const HEART_SVG = '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1900);
+}
+
+function saveFavs(){ localStorage.setItem('pt-favs', JSON.stringify([...favs])); }
+
+function toggleFav(id, btn){
+  if(favs.has(id)){ favs.delete(id); showToast('أُزيل من المفضلة'); }
+  else { favs.add(id); showToast('أُضيف إلى المفضلة ♥'); }
+  saveFavs();
+  document.querySelectorAll(`.fav-btn[data-id="${id}"]`).forEach(b => b.classList.toggle('on', favs.has(id)));
+  renderChips();
+  if(activeCat === 'fav') render();
+  syncLbFav();
+}
 
 function priceHTML(p){
   if(!p.raw && !p.printed) return '';
@@ -256,18 +426,24 @@ function priceHTML(p){
   return h + '</div>';
 }
 
-function cardHTML(p, i){
+function cardHTML(p){
   const multi = p.images.length > 1 ? `<span class="multi">${p.images.length} صور</span>` : '';
   const contents = p.contents ? `<div class="contents">${p.contents}</div>` : '';
-  return `<article class="card" data-idx="${i}">
-    <div class="thumb"><img src="${p.images[0].thumb}" data-full="${p.images[0].full}" alt="${p.name}" loading="lazy">${multi}</div>
+  const favOn = favs.has(p.id) ? ' on' : '';
+  return `<article class="card" data-id="${p.id}">
+    <div class="thumb">
+      <img src="${p.images[0].thumb}" alt="${p.name}" loading="lazy">
+      ${multi}
+      <button class="fav-btn${favOn}" data-id="${p.id}" aria-label="المفضلة">${HEART_SVG}</button>
+    </div>
     <div class="body"><h3>${p.name}</h3>${contents}${priceHTML(p)}</div>
   </article>`;
 }
 
 function filtered(){
   return PRODUCTS.filter(p => {
-    if(activeCat !== 'الكل' && p.category !== activeCat) return false;
+    if(activeCat === 'fav'){ if(!favs.has(p.id)) return false; }
+    else if(activeCat !== 'الكل' && p.category !== activeCat) return false;
     if(query){
       const hay = (p.name + ' ' + (p.contents||'') + ' ' + (p.code||'')).toLowerCase();
       if(!hay.includes(query)) return false;
@@ -276,22 +452,55 @@ function filtered(){
   });
 }
 
+/* Scroll-reveal */
+let revealObserver = null;
+function observeCards(){
+  if(revealObserver) revealObserver.disconnect();
+  const cards = [...grid.querySelectorAll('.card')];
+  if(!('IntersectionObserver' in window)){ cards.forEach(c => c.classList.add('in')); return; }
+  revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if(en.isIntersecting){ en.target.classList.add('in'); revealObserver.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px 40px 0px', threshold: 0.08 });
+  cards.forEach((c, i) => {
+    c.style.transitionDelay = ((i % 8) * 45) + 'ms';
+    revealObserver.observe(c);
+  });
+}
+
+function bindImages(){
+  grid.querySelectorAll('.thumb img').forEach(img => {
+    if(img.complete && img.naturalWidth > 0) img.classList.add('ok');
+    else img.addEventListener('load', () => img.classList.add('ok'), { once: true });
+  });
+}
+
 function render(){
   const list = filtered();
   countBadge.textContent = PRODUCTS.length + ' منتج';
+  resultsEl.textContent = list.length === PRODUCTS.length
+    ? `عرض ${list.length} منتجًا`
+    : `عرض ${list.length} من ${PRODUCTS.length} منتجًا`;
   if(!list.length){
-    grid.innerHTML = '<div class="empty">لا توجد منتجات مطابقة لبحثك</div>';
+    grid.innerHTML = activeCat === 'fav'
+      ? '<div class="empty">لا توجد منتجات في المفضلة بعد — اضغط ♥ على أي منتج لحفظه هنا</div>'
+      : '<div class="empty">لا توجد منتجات مطابقة لبحثك</div>';
     return;
   }
-  grid.innerHTML = list.map((p, k) => cardHTML(p, PRODUCTS.indexOf(p))).join('');
+  grid.innerHTML = list.map(cardHTML).join('');
+  bindImages();
+  observeCards();
 }
 
 function renderChips(){
   const cats = ['الكل', ...new Set(PRODUCTS.map(p => p.category))];
-  chipsEl.innerHTML = cats.map(c => {
+  let html = cats.map(c => {
     const n = c === 'الكل' ? PRODUCTS.length : PRODUCTS.filter(p => p.category === c).length;
     return `<button class="chip${c === activeCat ? ' active' : ''}" data-cat="${c}">${c} <span class="n">${n}</span></button>`;
   }).join('');
+  html += `<button class="chip fav-chip${activeCat === 'fav' ? ' active' : ''}" data-cat="fav">♥ المفضلة <span class="n">${favs.size}</span></button>`;
+  chipsEl.innerHTML = html;
 }
 
 chipsEl.addEventListener('click', e => {
@@ -308,22 +517,52 @@ searchEl.addEventListener('input', () => {
 });
 
 grid.addEventListener('click', e => {
+  const favBtn = e.target.closest('.fav-btn');
+  if(favBtn){ e.stopPropagation(); toggleFav(favBtn.dataset.id); return; }
   const card = e.target.closest('.card');
   if(!card) return;
-  openLightbox(+card.dataset.idx);
+  openLightbox(card.dataset.id);
 });
+
+/* View toggle */
+function applyView(){
+  grid.classList.toggle('large', viewMode === 'large');
+  document.getElementById('viewGrid').classList.toggle('active', viewMode === 'grid');
+  document.getElementById('viewLarge').classList.toggle('active', viewMode === 'large');
+  localStorage.setItem('pt-view', viewMode);
+}
+document.getElementById('viewGrid').addEventListener('click', () => { viewMode = 'grid'; applyView(); });
+document.getElementById('viewLarge').addEventListener('click', () => { viewMode = 'large'; applyView(); });
+
+/* Header shadow + back-to-top */
+const header = document.getElementById('header');
+const toTop = document.getElementById('toTop');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 10);
+  toTop.classList.toggle('show', window.scrollY > 600);
+}, { passive: true });
+toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
 /* Lightbox */
 const lb = document.getElementById('lightbox');
 const lbImg = document.getElementById('lbImg');
+const lbWrap = document.getElementById('lbWrap');
 const lbTitle = document.getElementById('lbTitle');
 const lbContents = document.getElementById('lbContents');
 const lbPrices = document.getElementById('lbPrices');
 const lbCounter = document.getElementById('lbCounter');
+const lbFav = document.getElementById('lbFav');
 let lbProduct = null, lbIndex = 0;
 
+function syncLbFav(){
+  if(!lbProduct) return;
+  const on = favs.has(lbProduct.id);
+  lbFav.classList.toggle('on', on);
+  lbFav.textContent = on ? '♥ في المفضلة' : '♡ المفضلة';
+}
 function showLb(){
   const img = lbProduct.images[lbIndex];
+  lbWrap.classList.remove('zoomed');
   lbImg.src = img.full;
   lbImg.alt = lbProduct.name;
   lbTitle.textContent = lbProduct.name;
@@ -332,17 +571,22 @@ function showLb(){
   lbCounter.textContent = lbProduct.images.length > 1 ? `صورة ${lbIndex+1} من ${lbProduct.images.length}` : '';
   document.getElementById('lbPrev').style.display = lbProduct.images.length > 1 ? 'flex' : 'none';
   document.getElementById('lbNext').style.display = lbProduct.images.length > 1 ? 'flex' : 'none';
+  syncLbFav();
 }
-function openLightbox(idx){
-  lbProduct = PRODUCTS[idx];
+function openLightbox(id){
+  lbProduct = PRODUCTS.find(p => p.id === id);
+  if(!lbProduct) return;
   lbIndex = 0;
   showLb();
   lb.classList.add('open');
   document.body.style.overflow = 'hidden';
+  history.replaceState(null, '', '#' + lbProduct.id);
 }
 function closeLightbox(){
   lb.classList.remove('open');
+  lbWrap.classList.remove('zoomed');
   document.body.style.overflow = '';
+  history.replaceState(null, '', location.pathname + location.search);
 }
 document.getElementById('lbClose').addEventListener('click', closeLightbox);
 lb.addEventListener('click', e => { if(e.target === lb) closeLightbox(); });
@@ -362,12 +606,23 @@ document.addEventListener('keydown', e => {
   if(e.key === 'ArrowLeft') document.getElementById('lbNext').click();
   if(e.key === 'ArrowRight') document.getElementById('lbPrev').click();
 });
+lbFav.addEventListener('click', () => { if(lbProduct) toggleFav(lbProduct.id); });
 
-/* Touch swipe in lightbox */
+/* Tap image to zoom (origin at tap point) */
+lbImg.addEventListener('click', e => {
+  const r = lbImg.getBoundingClientRect();
+  const x = ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%';
+  const y = ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%';
+  lbImg.style.transformOrigin = x + ' ' + y;
+  lbWrap.classList.toggle('zoomed');
+});
+
+/* Touch swipe in lightbox (disabled while zoomed) */
 let touchX = null;
 lbImg.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, {passive:true});
 lbImg.addEventListener('touchend', e => {
   if(touchX === null || !lbProduct || lbProduct.images.length < 2) return;
+  if(lbWrap.classList.contains('zoomed')){ touchX = null; return; }
   const dx = e.changedTouches[0].clientX - touchX;
   if(Math.abs(dx) > 40){
     lbIndex = (lbIndex + (dx < 0 ? 1 : -1) + lbProduct.images.length) % lbProduct.images.length;
@@ -376,12 +631,31 @@ lbImg.addEventListener('touchend', e => {
   touchX = null;
 }, {passive:true});
 
+/* Copy link + share */
+function productURL(){ return location.origin + location.pathname + '#' + lbProduct.id; }
+async function copyLink(){
+  const url = productURL();
+  try { await navigator.clipboard.writeText(url); showToast('تم نسخ رابط المنتج ✓'); }
+  catch(_){ showToast(url); }
+}
+document.getElementById('lbCopy').addEventListener('click', copyLink);
+document.getElementById('lbShare').addEventListener('click', async () => {
+  const data = { title: lbProduct.name + ' | تقنيات الطباعة', text: lbProduct.name, url: productURL() };
+  if(navigator.share){ try { await navigator.share(data); } catch(_){} }
+  else copyLink();
+});
+
 fetch('catalog.json')
   .then(r => r.json())
   .then(data => {
     PRODUCTS = data.products;
+    document.getElementById('statProducts').textContent = PRODUCTS.length;
+    document.getElementById('statCats').textContent = new Set(PRODUCTS.map(p => p.category)).size;
+    applyView();
     renderChips();
     render();
+    const hash = location.hash.replace('#','');
+    if(hash && PRODUCTS.some(p => p.id === hash)) openLightbox(hash);
   })
   .catch(() => {
     grid.innerHTML = '<div class="empty">تعذّر تحميل الكتالوج — حاول تحديث الصفحة</div>';
